@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add subject</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+        <h1>Add new subject</h1>
+
+        <form>
+            <p>
+                <input type="text" class="input" id="subject_name" placeholder="Enter name of subject">
+            </p>
+
+            <p>
+                <input type="button"  class="button" id="add-subject" value="Add subject">
+            </p>
+        </form>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/add-subject.js') }}"></script>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Remove subject</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+        <h1>Remove existing subject</h1>
+
+        <form>
+            <p>
+                <select id="subject_name" class="input">
+                    <option value="--Select a subject--">--Select a subject--</option>
+                    {% for subject_name in subject_names %}
+                        <option value="{{subject_name}}">{{subject_name}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <input type="button" class="button" id="remove-subject" value="Remove subject">
+            </p>
+        </form>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/remove-subject.js') }}"></script>
+    </body>
+</html>
