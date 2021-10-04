@@ -1,4 +1,6 @@
+from types import MethodDescriptorType
 from flask import Flask, request, render_template, jsonify
+from flask.globals import current_app
 
 from db_instance import DBInstance
 
@@ -15,11 +17,29 @@ app.config["SESSION_TYPE"] = "filesystem"
 def get_success_dict(success_message):
     return {"icon": "success", "title": "Success", "text": success_message}
 
+def get_success_dict_with_redict(success_message, url):
+    success_dict = get_success_dict(success_message)
+    success_dict["url"] = url
+
+    return success_dict
+
 def get_error_dict(error_message):
     return {"icon": "error", "title": "Error", "text": error_message}
 
-@app.route("/", methods=['GET'])
+
+@app.route("/", methods=["GET"])
 def index():
+
+    if request.method == "GET":
+        db = DBInstance.get_instance()
+        cursor = db.cursor()
+
+        cursor.execute("SELECT * FROM deadlines")
+
+        return jsonify({"deadlines": cursor.fetchall()})
+
+@app.route("/add-deadline", methods=['GET', 'POST'])
+def add_deadline():
 
     if request.method == "GET":
         db = DBInstance.get_instance()
@@ -29,7 +49,30 @@ def index():
         subject_names = cursor.fetchall()
         subject_names = [subject_name[0] for subject_name in subject_names]
 
-        return render_template("index.html", subject_names=subject_names)
+        return render_template("add-deadline.html", subject_names=subject_names)
+    elif request.method == "POST":
+        subject_name = request.form.get("subject_name")
+        type = request.form.get("type")
+        deadline = request.form.get("deadline")
+
+        db = DBInstance.get_instance()
+        cursor = db.cursor()
+
+        cursor.execute(f"""SELECT * FROM deadlines WHERE name = '{subject_name}' 
+                           AND type = '{type}' AND deadline = '{deadline}'""")
+        cursor.fetchall()
+
+        if cursor.rowcount > 0:
+            return jsonify(get_error_dict("Deadline already exists!"))
+
+        try:
+            cursor.execute(f"""INSERT INTO deadlines (name, type, deadline) VALUES(
+                            '{subject_name}', '{type}', '{deadline}')""")
+            db.commit()
+        except:
+            return jsonify(get_error_dict("Error adding deadline!"))
+
+        return jsonify(get_success_dict_with_redict("Deadline added successfully!", "/"))
 
 @app.route("/add-subject", methods=['GET', 'POST'])
 def add_subject():
@@ -54,10 +97,7 @@ def add_subject():
         except:
             return jsonify(get_error_dict("Error adding subject!"))
 
-        success_dict = get_success_dict("Subject added successfully!")
-        success_dict['url'] = "/"
-
-        return jsonify(success_dict)
+        return jsonify(get_success_dict_with_redict("Subject added successfully!", "/"))
 
 @app.route("/remove-subject", methods=['GET', 'POST'])
 def remove_subject():
@@ -87,10 +127,7 @@ def remove_subject():
         except:
             return jsonify(get_error_dict("Error removing subject!"))
 
-        success_dict = get_success_dict("Subject removed successfully!")
-        success_dict['url'] = "/"
-
-        return jsonify(success_dict)
+        return jsonify(get_success_dict_with_redict("Subject removed successfully!", "/"))
 
 if __name__ == "__main__":
     app.run(debug=True)

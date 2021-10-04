@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add deadline</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+        <h1>Add new deadline</h1>
+
+        <form>
+            <p>
+                <select id="subject_name" class="input">
+                    <option value="--Select a subject--">--Select a subject--</option>
+                    {% for subject_name in subject_names %}
+                        <option value="{{subject_name}}">{{subject_name}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <select id="type" class="input">
+                    <option value="--Select a type--">--Select a type--</option>
+                    <option value="Quiz">Quiz</option>
+                    <option value="Assignment">Assignment</option>
+                </select> 
+            </p>
+
+            <p>
+                <label for="date"><strong>Deadline:</strong></label>
+            </p>
+            <p>
+                <input type="date" class="input" id="deadline">
+            </p>
+            
+            <p>
+                <input type="button" class="button" id="add-deadline" value="Add deadline">
+            </p>
+        </form>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/add-deadline.js') }}"></script>
+    </body>
+</html>

@@ -4,7 +4,7 @@ $(document).ready(function() {
         let data = {
             "subject_name": ["empty"],
         };
-        validate_and_post("/add-subject", data, swal_ajax_post);
+        validate_and_post("/add-subject", data, swal_ajax_post_redirect);
     });
 
 });
