@@ -35,8 +35,11 @@ def index():
         cursor = db.cursor()
 
         cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
+        deadlines = cursor.fetchall()
+        deadlines = [{"task": deadline[0], "subject": deadline[1], "type": deadline[2], "deadline": deadline[3]}
+                      for deadline in deadlines]
 
-        return jsonify({"deadlines": cursor.fetchall()})
+        return render_template("index.html", deadlines=deadlines)
 
 @app.route("/add-deadline", methods=['GET', 'POST'])
 def add_deadline():

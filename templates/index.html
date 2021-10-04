@@ -4,15 +4,41 @@
         <title>Deadlines</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables.min.css') }}">
     </head>
 
     <body>
         <h1>Deadlines</h1>
 
+        <table id="deadlines">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Task</th>
+                    <th>Subject</th>
+                    <th>Type</th>
+                    <th>Deadline</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% set ns = namespace(i = 1) %}
+                {% for deadline in deadlines %}
+                    <tr>
+                        <td>{{ns.i}}</td>
+                        <td>{{deadline['task']}}</td>
+                        <td>{{deadline['subject']}}</td>
+                        <td>{{deadline['type']}}</td>
+                        <td>{{deadline['deadline']}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/datatables.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
     </body>
 </html>
