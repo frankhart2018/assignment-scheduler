@@ -34,7 +34,7 @@ def index():
         db = DBInstance.get_instance()
         cursor = db.cursor()
 
-        cursor.execute("SELECT * FROM deadlines")
+        cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
 
         return jsonify({"deadlines": cursor.fetchall()})
 
@@ -51,6 +51,7 @@ def add_deadline():
 
         return render_template("add-deadline.html", subject_names=subject_names)
     elif request.method == "POST":
+        task = request.form.get("task")
         subject_name = request.form.get("subject_name")
         type = request.form.get("type")
         deadline = request.form.get("deadline")
@@ -58,18 +59,18 @@ def add_deadline():
         db = DBInstance.get_instance()
         cursor = db.cursor()
 
-        cursor.execute(f"""SELECT * FROM deadlines WHERE name = '{subject_name}' 
-                           AND type = '{type}' AND deadline = '{deadline}'""")
+        cursor.execute(f"""SELECT * FROM deadlines WHERE task = '{task}' AND name = '{subject_name}'""")
         cursor.fetchall()
 
         if cursor.rowcount > 0:
             return jsonify(get_error_dict("Deadline already exists!"))
 
         try:
-            cursor.execute(f"""INSERT INTO deadlines (name, type, deadline) VALUES(
-                            '{subject_name}', '{type}', '{deadline}')""")
+            cursor.execute(f"""INSERT INTO deadlines (task, name, type, deadline) VALUES(
+                            '{task}', '{subject_name}', '{type}', '{deadline}')""")
             db.commit()
-        except:
+        except Exception as e:
+            print(e)
             return jsonify(get_error_dict("Error adding deadline!"))
 
         return jsonify(get_success_dict_with_redict("Deadline added successfully!", "/"))

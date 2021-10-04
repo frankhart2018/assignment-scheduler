@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     $("#add-deadline").click(function() {
         let data = {
+            "task": ["empty"],
             "subject_name": ["empty"],
             "type": ["empty"],
             "deadline": ["empty"],
