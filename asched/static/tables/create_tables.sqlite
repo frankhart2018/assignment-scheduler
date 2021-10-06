@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS subjects(
 CREATE TABLE IF NOT EXISTS deadlines(
     task TEXT PRIMARY KEY,
     name TEXT NOT NULL,
-    type TEXT CHECK (type == 'Quiz' OR type == 'Assignment') NOT NULL,
+    type TEXT CHECK (type == 'Quiz' OR type == 'Assignment' OR type == 'Project') NOT NULL,
     deadline TEXT NOT NULL
 );
