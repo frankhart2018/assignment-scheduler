@@ -31,6 +31,8 @@
                         <td>{{deadline['type']}}</td>
                         <td>{{deadline['deadline']}}</td>
                     </tr>
+
+                    {% set ns.i = ns.i + 1 %}
                 {% endfor %}
             </tbody>
         </table>
