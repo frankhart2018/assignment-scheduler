@@ -1,8 +1,6 @@
-from types import MethodDescriptorType
 from flask import Flask, request, render_template, jsonify
-from flask.globals import current_app
 
-from db_instance import DBInstance
+from .db_instance import DBInstance
 
 
 # Instantiate flask app

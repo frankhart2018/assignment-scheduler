@@ -1,7 +1,7 @@
 import os
 import sqlite3
 
-from constants import DB_PATH, CREATE_TABLES_FILE_PATH
+from .constants import DB_PATH, CREATE_TABLES_FILE_PATH
 
 
 class DBInstance:
