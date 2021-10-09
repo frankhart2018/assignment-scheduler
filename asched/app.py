@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+from datetime import datetime
 
 from .db_instance import DBInstance
 
@@ -21,6 +22,14 @@ def get_success_dict_with_redict(success_message, url):
 
     return success_dict
 
+def get_day_difference(date):
+    today = datetime.today().strftime("%Y-%m-%d")
+
+    today = datetime.strptime(today, "%Y-%m-%d")
+    date = datetime.strptime(date, "%Y-%m-%d")
+
+    return (date - today).days
+
 def get_error_dict(error_message):
     return {"icon": "error", "title": "Error", "text": error_message}
 
@@ -34,8 +43,10 @@ def index():
 
         cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
         deadlines = cursor.fetchall()
-        deadlines = [{"task": deadline[0], "subject": deadline[1], "type": deadline[2], "deadline": deadline[3]}
-                      for deadline in deadlines]
+        deadlines = [{"task": deadline[0], "subject": deadline[1], 
+                      "type": deadline[2], "deadline": deadline[3],
+                      "days_left": get_day_difference(deadline[3])}
+                      for deadline in deadlines if get_day_difference(deadline[3]) >= 0]
 
         return render_template("index.html", deadlines=deadlines)
 
