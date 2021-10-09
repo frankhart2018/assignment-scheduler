@@ -9,3 +9,4 @@
 
 - Number of days left for submission
 - Show only upcoming deadlines
+- Add buttons for adding subject and deadline
