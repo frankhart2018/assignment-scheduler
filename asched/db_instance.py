@@ -10,7 +10,7 @@ class DBInstance:
     @classmethod
     def __set_instance(cls):
         if cls.__dbinstance is None:
-            cls.__dbinstance = sqlite3.connect(DB_PATH)
+            cls.__dbinstance = sqlite3.connect(DB_PATH, check_same_thread=False)
 
     @classmethod
     def setup_db(cls):

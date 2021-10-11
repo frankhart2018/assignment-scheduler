@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, json, request, render_template, jsonify
+from flask_cors import CORS, cross_origin
 from datetime import datetime
 
 from .db_instance import DBInstance
@@ -6,6 +7,7 @@ from .db_instance import DBInstance
 
 # Instantiate flask app
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 # Basic config for flask app
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
@@ -34,21 +36,31 @@ def get_error_dict(error_message):
     return {"icon": "error", "title": "Error", "text": error_message}
 
 
+def get_deadlines_from_db():
+    db = DBInstance.get_instance()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
+    deadlines = cursor.fetchall()
+    deadlines = [{"task": deadline[0], "subject": deadline[1], 
+                    "type": deadline[2], "deadline": deadline[3],
+                    "days_left": get_day_difference(deadline[3])}
+                    for deadline in deadlines if get_day_difference(deadline[3]) >= 0]
+
+    return deadlines
+
 @app.route("/", methods=["GET"])
 def index():
 
     if request.method == "GET":
-        db = DBInstance.get_instance()
-        cursor = db.cursor()
+        return render_template("index.html", deadlines=get_deadlines_from_db())
 
-        cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
-        deadlines = cursor.fetchall()
-        deadlines = [{"task": deadline[0], "subject": deadline[1], 
-                      "type": deadline[2], "deadline": deadline[3],
-                      "days_left": get_day_difference(deadline[3])}
-                      for deadline in deadlines if get_day_difference(deadline[3]) >= 0]
+@app.route("/get-deadlines", methods=["GET"])
+@cross_origin(supports_credentials=True)
+def get_deadlines():
 
-        return render_template("index.html", deadlines=deadlines)
+    if request.method == "GET":
+        return jsonify(get_deadlines_from_db())
 
 @app.route("/add-deadline", methods=['GET', 'POST'])
 def add_deadline():

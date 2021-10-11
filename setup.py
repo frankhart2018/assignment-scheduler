@@ -42,7 +42,7 @@ setup(
     description=("Simple assignment scheduler."),
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/frankhart2018/thoughts",
+    url="https://github.com/frankhart2018/assignment-scheduler",
     author="Siddhartha Dhar Choudhury",
     author_email="sdharchou@gmail.com",
     license="MIT",
