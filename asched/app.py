@@ -99,6 +99,42 @@ def add_deadline():
 
         return jsonify(get_success_dict_with_redict("Deadline added successfully!", "/"))
 
+@app.route("/remove-deadline", methods=['GET', 'POST'])
+def remove_deadline():
+    
+        if request.method == "GET":
+            db = DBInstance.get_instance()
+            cursor = db.cursor()
+    
+            cursor.execute("SELECT * FROM deadlines ORDER BY deadline")
+            deadlines = cursor.fetchall()
+            tasks = [deadline[0] for deadline in deadlines if get_day_difference(deadline[3]) >= 0]
+            cursor.execute("SELECT * FROM subjects")
+            subjects = cursor.fetchall()
+            subjects = list(set([subject[0] for subject in subjects]))
+    
+            return render_template("remove-deadline.html", subjects=subjects, tasks=tasks)
+        elif request.method == "POST":
+            task = request.form.get("task")
+    
+            db = DBInstance.get_instance()
+            cursor = db.cursor()
+    
+            cursor.execute(f"""SELECT * FROM deadlines WHERE task = '{task}'""")
+            cursor.fetchall()
+    
+            if cursor.rowcount == 0:
+                return jsonify(get_error_dict("Deadline does not exist!"))
+    
+            try:
+                cursor.execute(f"""DELETE FROM deadlines WHERE task = '{task}'""")
+                db.commit()
+            except Exception as e:
+                print(e)
+                return jsonify(get_error_dict("Error removing deadline!"))
+    
+            return jsonify(get_success_dict_with_redict("Deadline removed successfully!", "/"))
+
 @app.route("/add-subject", methods=['GET', 'POST'])
 def add_subject():
 

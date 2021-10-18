@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Remove deadline</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    </head>
+
+    <body>
+        <h1>Remove a deadline</h1>
+
+        <form>
+            <p>
+                <select id="task" class="input">
+                    <option value="--Select a subject--">--Select a task--</option>
+                    {% for task in tasks %}
+                        <option value="{{task}}">{{task}}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <input type="button" class="button" id="remove-deadline" value="Remove deadline">
+            </p>
+        </form>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/remove-deadline.js') }}"></script>
+    </body>
+</html>
