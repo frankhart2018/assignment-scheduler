@@ -14,14 +14,14 @@ class DBInstance:
 
     @classmethod
     def setup_db(cls):
-        if(cls.__dbinstance == None):
+        if cls.__dbinstance == None:
             cls.__set_instance()
-        
+
         cursor = cls.__dbinstance.cursor()
 
-        with open(CREATE_TABLES_FILE_PATH, 'r') as file:
+        with open(CREATE_TABLES_FILE_PATH, "r") as file:
             cursor.executescript(file.read())
-            
+
         cls.__dbinstance.commit()
 
     @classmethod

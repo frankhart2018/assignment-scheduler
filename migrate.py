@@ -21,6 +21,8 @@ existing_db_cursor.execute("SELECT * FROM deadlines")
 existing_db_deadlines = existing_db_cursor.fetchall()
 
 for deadline in existing_db_deadlines:
-    new_db_cursor.execute(f"""INSERT INTO deadlines(task, name, type, deadline) 
-                              VALUES ('{deadline[0]}', '{deadline[1]}', '{deadline[2]}', '{deadline[3]}')""")
+    new_db_cursor.execute(
+        f"""INSERT INTO deadlines(task, name, type, deadline) 
+                              VALUES ('{deadline[0]}', '{deadline[1]}', '{deadline[2]}', '{deadline[3]}')"""
+    )
     new_db.commit()

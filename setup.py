@@ -11,10 +11,12 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
+
 def read(rel_path):
     here = os.path.abspath(os.path.dirname(__file__))
     with codecs.open(os.path.join(here, rel_path), "r") as fp:
         return fp.read()
+
 
 def get_version(rel_path):
     for line in read(rel_path).splitlines():
@@ -24,17 +26,22 @@ def get_version(rel_path):
     else:
         raise RuntimeError("Unable to find version string.")
 
+
 def get_css():
     return glob.glob("asched/static/css/*.css")
+
 
 def get_js():
     return glob.glob("asched/static/js/*.js")
 
+
 def get_html():
     return glob.glob("asched/templates/*.html")
 
+
 def get_sqlite():
     return glob.glob("asched/static/tables/*.sqlite")
+
 
 setup(
     name="asched",
@@ -55,12 +62,7 @@ setup(
         "Programming Language :: Python :: 3.6",
     ],
     packages=[package for package in find_packages()],
-    package_data={
-        "asched": get_css() + get_js() + get_html() + get_sqlite(),
-    },
-    entry_points={"console_scripts": [
-            "asched = asched.run_app:run_app",
-        ]
-    },
+    package_data={"asched": get_css() + get_js() + get_html() + get_sqlite(),},
+    entry_points={"console_scripts": ["asched = asched.run_app:run_app",]},
     install_requires=["flask"],
 )
