@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Edit deadline {{id}}</title>
+        <title>Edit deadline</title>
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
 
     <body>
-        <h1>Edit deadline {{id}}</h1>
+        <h1>Edit deadline</h1>
 
         <form>
             <p>
-                <input type="text" class="input" id="task" value="{{name}}">
+                <input type="text" class="input" id="task" placeholder="Enter the task name" value="{{deadline['task']}}">
             </p>
 
             <p>
                 <select id="subject_name" class="input">
                     <option value="--Select a subject--">--Select a subject--</option>
                     {% for subject_name in subject_names %}
-                        <option value="{{subject_name}}">{{subject_name}}</option>
+                        {% if deadline['subject'] == subject_name %}
+                            <option value="{{subject_name}}" selected>{{subject_name}}</option>
+                        {% else %}
+                            <option value="{{subject_name}}">{{subject_name}}</option>
+                        {% endif %}
                     {% endfor %}
                 </select>
             </p>
@@ -26,9 +30,10 @@
             <p>
                 <select id="type" class="input">
                     <option value="--Select a type--">--Select a type--</option>
-                    <option value="Quiz">Quiz</option>
-                    <option value="Assignment">Assignment</option>
-                    <option value="Project">Project</option>
+                    <option value="Quiz" {% if deadline['type'] == "Quiz" %} selected {% endif %}>Quiz</option>
+                    <option value="Assignment" {% if deadline['type'] == "Assignment" %} selected {% endif %}>Assignment</option>
+                    <option value="Project" {% if deadline['type'] == "Project" %} selected {% endif %}>Project</option>
+                    <option value="Discussion" {% if deadline['type'] == "Discussion" %} selected {% endif %}>Discussion</option>
                 </select> 
             </p>
 
@@ -36,17 +41,25 @@
                 <label for="date"><strong>Deadline:</strong></label>
             </p>
             <p>
-                <input type="date" class="input" id="deadline">
+                <input type="date" class="input" id="deadline" value="{{deadline['deadline']}}">
+            </p>
+
+            <p>
+                <select id="type" class="input">
+                    <option value="--Select a type--">--Select status--</option>
+                    <option value="pending" {% if deadline['status'] == "pending" %} selected {% endif %}>Pending</option>
+                    <option value="completed" {% if deadline['status'] == "completed" %} selected {% endif %}>Completed</option>
+                </select> 
             </p>
             
             <p>
-                <input type="button" class="button" id="add-deadline" value="Add deadline">
+                <input type="button" class="button" id="edit-deadline" value="Edit deadline">
             </p>
         </form>
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/add-subject.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/add-deadline.js') }}"></script>
     </body>
 </html>

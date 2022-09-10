@@ -1,6 +1,7 @@
 from flask import Flask, json, request, render_template, jsonify
 from flask_cors import CORS, cross_origin
 from datetime import datetime
+import urllib.parse
 
 from .db_instance import DBInstance
 
@@ -188,6 +189,32 @@ def add_subject():
 
         return jsonify(get_success_dict_with_redict("Subject added successfully!", "/"))
 
+
+@app.route("/edit-deadline", methods=["GET", "POST"])
+def edit_deadline():
+
+    if request.method == "GET":
+        task = request.args.get("task")
+        task = urllib.parse.unquote(task)
+
+        db = DBInstance.get_instance()
+        cursor = db.cursor()
+
+        cursor.execute(f"SELECT * FROM deadlines WHERE task='{task}'")
+        deadline = cursor.fetchall()[0]
+
+        deadline = {
+            "task": deadline[0],
+            "subject": deadline[1],
+            "type": deadline[2],
+            "deadline": deadline[3],
+            "status": deadline[4],
+        }
+
+        cursor.execute("SELECT * FROM subjects")
+        subject_names = [subject[0] for subject in cursor.fetchall()]
+
+        return render_template("edit-deadline.html", deadline=deadline, subject_names=subject_names)
 
 @app.route("/remove-subject", methods=["GET", "POST"])
 def remove_subject():
