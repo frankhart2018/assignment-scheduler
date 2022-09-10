@@ -36,7 +36,7 @@
                 {% set ns = namespace(i = 1) %}
                 {% for deadline in deadlines %}
                     {% if deadline['days_left'] <= 3 and deadline['status'] == "pending" %}
-                        <tr style="background-color: red;">
+                        <tr style="background-color: #FFCCCB;">
                     {% elif deadline['status'] == "pending" %}
                         <tr style="background-color: lightyellow;">
                     {% elif deadline['status'] == "completed" %}

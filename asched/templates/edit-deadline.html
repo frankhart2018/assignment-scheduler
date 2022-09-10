@@ -11,7 +11,7 @@
 
         <form>
             <p>
-                <input type="text" class="input" id="task" placeholder="Enter the task name" value="{{deadline['task']}}">
+                <input type="text" class="input" id="task" value="{{deadline['task']}}" disabled>
             </p>
 
             <p>
@@ -45,7 +45,7 @@
             </p>
 
             <p>
-                <select id="type" class="input">
+                <select id="status" class="input">
                     <option value="--Select a type--">--Select status--</option>
                     <option value="pending" {% if deadline['status'] == "pending" %} selected {% endif %}>Pending</option>
                     <option value="completed" {% if deadline['status'] == "completed" %} selected {% endif %}>Completed</option>
@@ -60,6 +60,6 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/fastquery.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/add-deadline.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/edit-deadline.js') }}"></script>
     </body>
 </html>

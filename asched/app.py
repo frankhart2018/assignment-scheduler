@@ -215,6 +215,22 @@ def edit_deadline():
         subject_names = [subject[0] for subject in cursor.fetchall()]
 
         return render_template("edit-deadline.html", deadline=deadline, subject_names=subject_names)
+    elif request.method == "POST":
+        task = request.form['task']
+        subject_name = request.form['subject_name']
+        type_ = request.form['type']
+        deadline = request.form['deadline']
+        status = request.form['status']
+
+        db = DBInstance.get_instance()
+        cursor = db.cursor()
+
+        cursor.execute(f"""
+            UPDATE deadlines SET name='{subject_name}', type='{type_}',
+            deadline='{deadline}', status='{status}' WHERE task='{task}'
+        """)
+
+        return jsonify(get_success_dict_with_redict("Subject updated successfully!", "/"))
 
 @app.route("/remove-subject", methods=["GET", "POST"])
 def remove_subject():
