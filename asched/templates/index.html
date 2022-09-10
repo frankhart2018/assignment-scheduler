@@ -27,31 +27,28 @@
                     <th>Type</th>
                     <th>Deadline</th>
                     <th>Days left</th>
+                    <th>Status</th>
                 </tr>
             </thead>
 
             <tbody>
                 {% set ns = namespace(i = 1) %}
                 {% for deadline in deadlines %}
-                    {% if deadline['days_left'] > 3 %}
-                        <tr>
-                            <td>{{ns.i}}</td>
-                            <td>{{deadline['task']}}</td>
-                            <td>{{deadline['subject']}}</td>
-                            <td>{{deadline['type']}}</td>
-                            <td>{{deadline['deadline']}}</td>
-                            <td>{{deadline['days_left']}}</td>
-                        </tr>
-                    {% else %}
-                        <tr style="color: red; font-weight: bold;">
-                            <td>{{ns.i}}</td>
-                            <td>{{deadline['task']}}</td>
-                            <td>{{deadline['subject']}}</td>
-                            <td>{{deadline['type']}}</td>
-                            <td>{{deadline['deadline']}}</td>
-                            <td>{{deadline['days_left']}}</td>
-                        </tr>
+                    {% if deadline['days_left'] <= 3 and deadline['status'] == "pending" %}
+                        <tr style="background-color: red;">
+                    {% elif deadline['status'] == "pending" %}
+                        <tr style="background-color: lightyellow;">
+                    {% elif deadline['status'] == "completed" %}
+                        <tr style="background-color: lightgreen;">
                     {% endif %}
+                        <td>{{ns.i}}</td>
+                        <td>{{deadline['task']}}</td>
+                        <td>{{deadline['subject']}}</td>
+                        <td>{{deadline['type']}}</td>
+                        <td>{{deadline['deadline']}}</td>
+                        <td>{{deadline['days_left']}}</td>
+                        <td>{{deadline['status']}}</td>
+                    </tr>
                     {% set ns.i = ns.i + 1 %}
                 {% endfor %}
             </tbody>

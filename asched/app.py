@@ -52,6 +52,7 @@ def get_deadlines_from_db():
             "type": deadline[2],
             "deadline": deadline[3],
             "days_left": get_day_difference(deadline[3]),
+            "status": deadline[4],
         }
         for deadline in deadlines
         if get_day_difference(deadline[3]) >= 0
