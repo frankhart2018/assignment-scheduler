@@ -229,6 +229,7 @@ def edit_deadline():
             UPDATE deadlines SET name='{subject_name}', type='{type_}',
             deadline='{deadline}', status='{status}' WHERE task='{task}'
         """)
+        db.commit()
 
         return jsonify(get_success_dict_with_redict("Subject updated successfully!", "/"))
 
