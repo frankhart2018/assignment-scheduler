@@ -2,6 +2,7 @@ from flask import Flask, json, request, render_template, jsonify
 from flask_cors import CORS, cross_origin
 from datetime import datetime
 import urllib.parse
+import psutil
 
 from .db_instance import DBInstance
 
@@ -265,6 +266,14 @@ def remove_subject():
             get_success_dict_with_redict("Subject removed successfully!", "/")
         )
 
+
+@app.route("/health", methods=["GET"])
+def health():
+
+    if request.method == "GET":
+        battery = psutil.sensors_battery().percent
+
+        return render_template("health.html", battery=battery)
 
 if __name__ == "__main__":
     app.run(debug=True)
