@@ -64,5 +64,5 @@ setup(
     packages=[package for package in find_packages()],
     package_data={"asched": get_css() + get_js() + get_html() + get_sqlite(),},
     entry_points={"console_scripts": ["asched = asched.run_app:run_app",]},
-    install_requires=["flask", "psutil"],
+    install_requires=["flask", "psutil", "flask_cors"],
 )
